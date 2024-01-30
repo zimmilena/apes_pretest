@@ -1,0 +1,56 @@
+---
+title: "apes_pretest"
+author: "Zero Dollar Apes"
+date: "2024-01-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# lädt die Programmbibliotheken
+library(tidyverse)
+library(igraph)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r Einlesen Edge- und Nodelist}
+library(igraph)
+
+# Einlesen der Edge- und Nodelist
+edges <- read.csv("https://raw.githubusercontent.com/zimmilena/apes_pretest/main/Bored%20Apes_Pretest%20-%20Edgelist_Pretest.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/zimmilena/apes_pretest/main/Bored%20Apes_Pretest%20-%20Nodelist_Pretest.csv", header=T, as.is=T, sep = ",")
+
+# Matrix erstellen
+edgematrix <-as.matrix(edges)
+
+# Zusammenführen von der Edge- und Nodelist als igraph-Objekt ba
+ba<- graph_from_data_frame(d=edgematrix, vertices = nodes, directed = T)
+
+# Gesamtnetzwerk gerichtet 
+ba <- graph_from_data_frame(d=edgematrix, vertices = nodes, directed = TRUE)
+
+# Jetzt: die Visualisierung des Netzwerks 
+
+# Visualisierung gerichetetes Netzwerk 
+plot(
+  ba,
+  layout = layout_with_kk(ba), #Layout Algorithmus 
+  vertex.label = V(ba)$name, # Beschriftung der Knoten 
+  vertex.size = 15, #Knotengröße 
+  vertex.color = "#FF77c6", # Knotenfarbe
+  edge.color = "black", # Kantenfarbe
+  edge.width = 2,
+  edge.curved = curve_multiple(ba),
+  main = "Bored Ape Yacht Club", #Titel
+  asp = 0) 
+
+
+
+```
+
